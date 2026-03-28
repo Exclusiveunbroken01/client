@@ -18,7 +18,7 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "^7.5.0",
-    "@react-email/components": "^1.0.8",
+    "@react-email/components": "^1.0.10",
     "@react-email/render": "^2.0.4",
     "amadeus": "^11.0.0",
     "bcrypt": "^6.0.0",
