@@ -1,7 +1,8 @@
+//src/lib/types/flight-search/flight-search-parser.ts
 import { CabinClassSchema, FlightTypeEnum } from '@/lib/schemas/enums/flight-types.enum';
 import { TFlightFormSchema } from '@/lib/hooks/website/landing-page.hook';
-import { TTiqwaAirportLocationValue } from '@/lib/schemas/server/tiqwa/utilities/airport-utility.schema';
 import { FlightSearchQuery } from './flight-search-url';
+import { AirportLocationValue } from '@/lib/types/server/airport.types';
 
 // type SearchParams = {
 //   from?: string;
@@ -33,11 +34,11 @@ export type flightFilterState = {
   refundableOnly: boolean;
 };
 
-function createMinimalLocation(city: string, cityCode: string, country: string): TTiqwaAirportLocationValue {
+function createMinimalLocation(city: string, cityCode: string, country: string): AirportLocationValue {
   return {
-    city: city, // placeholder, can be resolved later
+    city,
     city_code: cityCode,
-    country: country,
+    country,
   };
 }
 

@@ -1,8 +1,9 @@
 // src/app/[locale]/layout.tsx
-
+//grep -r "/api/" src/
+//grep -r "airports" src/
 import React from 'react';
 import type { Metadata } from 'next';
-import { Mulish } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import StoreProvider from './StoreProvider';
 import { NextIntlClientProvider } from 'next-intl';
@@ -11,8 +12,8 @@ import { Toaster } from 'sonner';
 import { getCachedMessages } from '@/i18n/getCachedMessages';
 import { notFound } from 'next/navigation';
 
-const mulish = Mulish({
-  subsets: ['latin', 'cyrillic'],
+const mulish = localFont({
+  src: '../../fonts/Mulish/static/Mulish-Regular.ttf',
 });
 
 export function generateStaticParams() {

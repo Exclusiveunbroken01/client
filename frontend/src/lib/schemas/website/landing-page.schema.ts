@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { CabinClassSchema, FlightTypeSchema } from '../enums/flight-types.enum';
-import { TiqwaAirportLocationValueSchema } from '../server/tiqwa/utilities/airport-utility.schema';
+import { AirportLocationValueSchema } from '../airport.schema';
 
 export const flightGuestSchema = z.object({
   adult: z.number().min(1),
@@ -14,8 +14,8 @@ export const flightFormSchema = z
   .object({
     flightType: FlightTypeSchema,
 
-    leavingFrom: TiqwaAirportLocationValueSchema,
-    goingTo: TiqwaAirportLocationValueSchema,
+    leavingFrom: AirportLocationValueSchema,
+    goingTo: AirportLocationValueSchema,
 
     departureDate: z.date(),
     returnDate: z.date().optional(),

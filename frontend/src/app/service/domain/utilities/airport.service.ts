@@ -1,17 +1,11 @@
-// services/airportService.ts
-//import { TTiqwaAirportListResponse } from '@/lib/schemas/server/tiqwa/utilities/airport-utility.schema';
-import { TTiqwaAirportListResponse } from '@/lib/schemas/server/tiqwa/utilities/airport-utility.schema';
-import { fetchJSON } from '@/lib/utils/server/response.util';
+// src/app/service/domain/utilities/airport.service.ts
 
-export async function searchAirportService(query: string): Promise<TTiqwaAirportListResponse> {
-  if (!query) {
-    query = 'par,lon,nyc,dxb,bkk,tyo,ist,rom,bcn,sin';
-  }
-  console.log('Tiqwa Airport Utilities', query);
+import { apiClient } from '@/lib/api/apiClient';
 
-  const res = await fetchJSON<TTiqwaAirportListResponse>(
-    `/api/tiqwa/utilities/airports?keyword=${encodeURIComponent(query)}`,
-  );
+export async function searchAirportService(query: string) {
+  if (!query.trim()) return [];
 
-  return res;
+  return apiClient('/flights/airports', {
+    query: { keyword: query },
+  });
 }
