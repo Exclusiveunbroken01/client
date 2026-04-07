@@ -4,7 +4,7 @@ import { ITabItemMB } from '@/types/default.type';
 import React from 'react';
 import { FaPlaneDeparture, FaHome, FaCar } from 'react-icons/fa';
 import HeroTabPanelMobile from './HeroTabPanelMobile';
-import FlightSession from '../../custom/FlightSession';
+import FlightSession from '@/components/flight/FlightSession';
 import HotelHomes from '../../custom/HotelHomes';
 import CarRentals from '../../custom/CarRentals';
 import { TbSocial } from 'react-icons/tb';

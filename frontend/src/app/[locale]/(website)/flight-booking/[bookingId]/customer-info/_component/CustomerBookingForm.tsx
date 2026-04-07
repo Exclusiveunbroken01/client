@@ -439,7 +439,7 @@ const CustomerBookingForm = ({
             />
           </CardContent>
         </Card>
-        ) : ()}
+        ) : (<></>)}
         <Button
           type='submit'
           size='lg'

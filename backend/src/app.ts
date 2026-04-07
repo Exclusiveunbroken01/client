@@ -9,6 +9,7 @@ import bookingsRoutes from "./modules/bookings/bookings.routes.js";
 import flightsRoutes from "./modules/flights/flights.routes.js";
 import paymentsRoutes from "./modules/payments/payments.routes.js";
 import adminRoutes from "./modules/admin/admin.routes.js";
+import countriesRoutes from "./modules/countries/countries.routes.js";
 
 // Import middleware
 import { errorHandler } from "./middleware/errorMiddleware.js";
@@ -31,6 +32,8 @@ app.use("/api/bookings", bookingsRoutes);
 app.use("/api/flights", flightsRoutes);
 app.use("/api/payments", paymentsRoutes);
 app.use("/api/admin", adminRoutes);
+
+app.use("/api/countries", countriesRoutes);
 
 // Global error handler
 app.use(errorHandler);

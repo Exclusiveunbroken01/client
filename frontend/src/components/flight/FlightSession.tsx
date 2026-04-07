@@ -78,23 +78,15 @@ const FlightSession = () => {
     setValue('guestNumber.totalGuest', adultNumber + childNumber, { shouldValidate: true });
   }, [adultNumber, childNumber, setValue]);
 
-  const handleAdultUpdate = (isAddition: boolean) => {
-    if (isAddition) {
-      setValue('guestNumber.adult', adultNumber + 1);
-    } else {
-      setValue('guestNumber.adult', adultNumber - 1);
-    }
-    setValue('guestNumber.adult', Math.max(0, adultNumber + (isAddition ? 1 : -1)));
-  };
+ const handleAdultUpdate = (isAddition: boolean) => {
+    const next = Math.max(0, adultNumber + (isAddition ? 1 : -1));
+    setValue('guestNumber.adult', next);
+    };
 
-  const handleChildUpdate = (isAddition: boolean) => {
-    if (isAddition) {
-      setValue('guestNumber.child', childNumber + 1);
-    } else {
-      setValue('guestNumber.child', childNumber - 1);
-    }
-    setValue('guestNumber.child', Math.max(0, childNumber + (isAddition ? 1 : -1)));
-  };
+    const handleChildUpdate = (isAddition: boolean) => {
+    const next = Math.max(0, childNumber + (isAddition ? 1 : -1));
+    setValue('guestNumber.child', next);
+    };
 
   const handleFlightInit = async (data: TFlightFormSchema) => {
     try {
