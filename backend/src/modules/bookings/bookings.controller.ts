@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { prisma } from "../../lib/prisma.js";
+import { createBookingService } from "./bookings.service.js";
 
 /**
  * GET /bookings
@@ -7,7 +8,7 @@ import { prisma } from "../../lib/prisma.js";
  */
 export const getAllBookings = async (req: Request, res: Response) => {
   try {
-    const bookings = await prisma.booking.findMany({
+    const booking = await createBookingService({
       orderBy: {
         createdAt: "desc",
       },
@@ -33,16 +34,7 @@ export const getAllBookings = async (req: Request, res: Response) => {
  */
 export const createBooking = async (req: Request, res: Response) => {
   try {
-    const { name, email, date, service } = req.body;
-
-    const booking = await prisma.booking.create({
-      data: {
-        name,
-        email,
-        date: new Date(date),
-        service,
-      },
-    });
+    const booking = await createBookingService(req.body);
 
     res.status(201).json({
       success: true,
