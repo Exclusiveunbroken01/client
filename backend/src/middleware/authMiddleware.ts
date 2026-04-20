@@ -24,7 +24,7 @@ export const requireAdmin = async (req: Request, res: Response, next: NextFuncti
     const payload: any = jwt.verify(token, env.JWT_SECRET);
 
     const user = await prisma.user.findUnique({ where: { id: payload.id } });
-    if (!user || user.role !== "admin") {
+    if (!user || user.role !== "ADMIN") {
       return res.status(403).json({ message: "Forbidden: Admins only" });
     }
 
@@ -34,4 +34,3 @@ export const requireAdmin = async (req: Request, res: Response, next: NextFuncti
     return res.status(403).json({ message: "Forbidden: Admins only" });
   }
 };
-

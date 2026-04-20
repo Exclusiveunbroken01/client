@@ -8,7 +8,7 @@ import { createBookingService } from "./bookings.service.js";
  */
 export const getAllBookings = async (req: Request, res: Response) => {
   try {
-    const booking = await createBookingService({
+    const bookings = await prisma.booking.findMany({
       orderBy: {
         createdAt: "desc",
       },

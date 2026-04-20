@@ -11,6 +11,11 @@ import {
   getAirlines,
 } from "./flights.service";
 
+const getSingleParam = (param: string | string[] | undefined): string | undefined => {
+  if (Array.isArray(param)) return param[0];
+  return param;
+};
+
 export const getAirports = async (req: Request, res: Response) => {
   try {
     const keyword = String(req.query.keyword || "");
@@ -30,7 +35,11 @@ export const getAirports = async (req: Request, res: Response) => {
 
 export const getFlights = async (req: Request, res: Response) => {
   try {
-    const { adults, cabin, departure_date, destination, origin } = req.query;
+    const origin = String(req.query.origin);
+	const destination = String(req.query.destination);
+	const adults = Number(req.query.adults);
+	const cabin = String(req.query.cabin);
+	const departure_date = String(req.query.departure_date);
 
     // Quick validation for required fields
     if (!adults || !cabin || !departure_date || !destination || !origin) {
@@ -53,7 +62,9 @@ export const getFlights = async (req: Request, res: Response) => {
 export const confirmFlightPrice = async (req: Request, res: Response) => {
   try {
     // Destructure the string out of req.params
-    const { flightId } = req.params; 
+    const flightId = Array.isArray(req.params.flightId)
+      ? req.params.flightId[0]
+      : req.params.flightId; 
 
     if (!flightId) {
       return res.status(400).json({ message: "Flight ID is required" });
@@ -71,7 +82,10 @@ export const confirmFlightPrice = async (req: Request, res: Response) => {
 
 export const bookFlightController = async (req: Request, res: Response) => {
   try {
-    const { flightId } = req.params;
+    const flightId = getSingleParam(req.params.flightId);
+    if (!flightId) {
+      return res.status(400).json({ success: false, message: "Flight ID is required" });
+    }
 
     const data = await bookFlight(flightId, req.body);
 
@@ -83,7 +97,10 @@ export const bookFlightController = async (req: Request, res: Response) => {
 
 export const getBooking = async (req: Request, res: Response) => {
   try {
-    const { reference } = req.params;
+    const reference = getSingleParam(req.params.reference);
+    if (!reference) {
+      return res.status(400).json({ success: false, message: "Reference is required" });
+    }
 
     const data = await getBookingDetails(reference);
 
@@ -95,7 +112,10 @@ export const getBooking = async (req: Request, res: Response) => {
 
 export const cancelFlight = async (req: Request, res: Response) => {
   try {
-    const { reference } = req.params;
+    const reference = getSingleParam(req.params.reference);
+    if (!reference) {
+      return res.status(400).json({ success: false, message: "Reference is required" });
+    }
 
     const data = await cancelBooking(reference);
 
@@ -107,7 +127,10 @@ export const cancelFlight = async (req: Request, res: Response) => {
 
 export const payForFlight = async (req: Request, res: Response) => {
   try {
-    const { reference } = req.params;
+    const reference = getSingleParam(req.params.reference);
+    if (!reference) {
+      return res.status(400).json({ success: false, message: "Reference is required" });
+    }
 
     const data = await issueTicket(reference);
 
@@ -136,5 +159,4 @@ export const getAirlinesController = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 
