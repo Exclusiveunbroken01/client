@@ -9,7 +9,7 @@ import {
   issueTicket,
   searchMultiCityFlights,
   getAirlines,
-} from "./flights.service";
+} from "./flights.service.js";
 
 const getSingleParam = (param: string | string[] | undefined): string | undefined => {
   if (Array.isArray(param)) return param[0];
