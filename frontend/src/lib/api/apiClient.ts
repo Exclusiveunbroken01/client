@@ -29,13 +29,20 @@ export async function apiClient<TResponse, TBody = unknown>(
 
   const url = `${process.env.NEXT_PUBLIC_API_URL}${endpoint}${queryString}`;
 
+  const requestHeaders: Record<string, string> = {
+    ...headers,
+  };
+
+  // Avoid forcing CORS preflight on GET by not sending JSON content type
+  // unless there is an actual request body.
+  if (body !== undefined) {
+    requestHeaders['Content-Type'] = 'application/json';
+  }
+
   const res = await fetch(url, {
     method,
     body: body ? JSON.stringify(body) : undefined,
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers,
-    },
+    headers: requestHeaders,
     cache: 'no-store',
   });
 
