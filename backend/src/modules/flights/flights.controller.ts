@@ -1,3 +1,4 @@
+
 import type { Request, Response } from "express";
 import {
   searchAirports,
@@ -58,7 +59,6 @@ export const getFlights = async (req: Request, res: Response) => {
 };
 
 // backend/src/modules/flights/flights.controller.ts
-
 export const confirmFlightPrice = async (req: Request, res: Response) => {
   try {
     // Destructure the string out of req.params
