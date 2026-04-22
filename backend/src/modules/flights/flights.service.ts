@@ -136,8 +136,6 @@ export const issueTicket = async (reference: string) => {
   });
 };
 
-
-
 /**
  * 🌍 Multi-city Flight Search
  */
@@ -161,8 +159,6 @@ export const searchMultiCityFlights = async (payload: {
   });
 };
 
-
-
 /**
  * 🛫 Airports Search
  */
@@ -175,8 +171,6 @@ export const searchAirports = async (keyword: string) => {
     method: "GET",
   });
 };
-
-
 
 /**
  * 🛩️ Airlines
