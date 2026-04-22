@@ -54,7 +54,7 @@ export const getFlights = async (req: Request, res: Response) => {
     res.json(data);
   } catch (error: any) {
     console.error("Flight search error:", error.message);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error?.message || 'Internal Server Error', error: process.env.NODE_env === 'development' ? error : undefined, });
   }
 };
 

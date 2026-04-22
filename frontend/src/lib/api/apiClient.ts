@@ -56,8 +56,8 @@ export async function apiClient<TResponse, TBody = unknown>(
     let message = 'API Request failed';
 
     if (typeof parsed === 'object' && parsed !== null) {
-      const p = parsed as { message?: string; error?: string };
-      message = p.message || p.error || message;
+      const p = parsed as any; //const p = parsed as { message?: string; error?: string };
+      message = p.message || p.error?.message || JSON.stringify(p) || message; //message = p.message || p.error || message;
     } else if (typeof parsed === 'string') {
       message = parsed;
     }
