@@ -4,12 +4,9 @@ export const truncateText = (text: string, maxLength: number): string => {
 
 export const formatNGN = (
   amount?: number | string | null
-): string => {
-  const parsed = Number(amount);
-
-  if (Number.isNaN(parsed)) return '₦0';
-
-  return `₦${parsed.toLocaleString('en-NG')}`;
+) => {
+  const safe = Number(amount ?? 0);
+  return `₦${safe.toLocaleString('en-NG')}`;
 };
 
 export const parseTime = (timeStr: string): string => timeStr.slice(11, 16);
