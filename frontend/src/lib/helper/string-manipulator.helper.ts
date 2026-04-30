@@ -2,9 +2,16 @@ export const truncateText = (text: string, maxLength: number): string => {
   return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
 };
 
-export const formatNGN = (amount: number): string => {
-  return `₦${amount.toLocaleString('en-NG')}`;
+export const formatNGN = (
+  amount?: number | string | null
+): string => {
+  const parsed = Number(amount);
+
+  if (Number.isNaN(parsed)) return '₦0';
+
+  return `₦${parsed.toLocaleString('en-NG')}`;
 };
+
 export const parseTime = (timeStr: string): string => timeStr.slice(11, 16);
 export const formatDuration = (minutes: number): string => {
   const hours = Math.floor(minutes / 60);
