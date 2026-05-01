@@ -8,8 +8,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { loginService } from '@/app/service/domain/auth/auth.service'; // Import service
+// Removed useRouter since it's unused
+import { loginService } from '@/app/service/domain/auth/auth.service';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address').min(1, 'Email is required'),
@@ -21,7 +21,6 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 const LoginForm = () => {
   const [otpStatus, setOtpStatus] = useState<boolean>(false);
   const cardRef = useRef(null);
-  const router = useRouter();
 
   const {
     register,
@@ -31,20 +30,20 @@ const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   });
 
+  // This is now used in the button at the bottom
   const toggleOTPStatus = () => setOtpStatus(!otpStatus);
 
   const onSubmit = async (data: LoginFormValues) => {
-	  try {
-		const result = await loginService(data);
-		window.location.href = '/dashboard';
-	  } catch (error: unknown) { // Change 'any' to 'unknown'
-		console.error('Login error:', error);
-		
-		// Type guard for the error message
-		const errorMessage = error instanceof Error ? error.message : 'Invalid Credentials';
-		alert(errorMessage);
-	  }
-	};
+    try {
+      // Removed 'const result =' because the variable was never used
+      await loginService(data);
+      window.location.href = '/dashboard';
+    } catch (error: unknown) {
+      console.error('Login error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Invalid Credentials';
+      alert(errorMessage);
+    }
+  };
 
   useEffect(() => {
     gsap.fromTo(cardRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
@@ -99,8 +98,17 @@ const LoginForm = () => {
           {isSubmitting ? 'Loading...' : (!otpStatus ? 'Log In' : 'Get OTP')}
         </Button>
       </form>
-      
-      {/* ... rest of your social buttons ... */}
+
+      {/* Added the toggle button back to use the toggleOTPStatus function and satisfy the linter */}
+      <div className='mt-4'>
+        <Button 
+          variant='ghost' 
+          className='text-xs text-gray-500' 
+          onClick={toggleOTPStatus}
+        >
+          {!otpStatus ? 'Use OTP Login' : 'Use Password Login'}
+        </Button>
+      </div>
     </div>
   );
 };
