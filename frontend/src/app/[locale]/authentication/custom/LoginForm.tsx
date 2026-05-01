@@ -37,38 +37,26 @@ const LoginForm = () => {
   const router = useRouter();
 
   const onSubmit = async (data: LoginFormValues) => {
-      try {
-        const res = await fetch('https://client-dun-rho-34.vercel.app/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-          credentials: 'include', // Important for cookies
-        });
+	  try {
+		const res = await fetch('/api/auth/login', {
+		  method: 'POST',
+		  headers: { 'Content-Type': 'application/json' },
+		  body: JSON.stringify(data),
+		  credentials: 'include',
+		});
 
-        const result = await res.json();
+		const result = await res.json();
 
-        if (!res.ok) {
-          alert(result.message || 'Invalid Credentials');
-          return;
-        }
+		if (!res.ok) {
+		  alert(result.message || 'Invalid Credentials');
+		  return;
+		}
 
-        // Refresh the page or use router.push to the LOCALE-prefixed dashboard
-        // 'window.location.href' is often safer for auth to ensure middleware picks up the new cookie
-        window.location.href = '/dashboard'; 
-        
-      } catch (error) {
-        console.error('Login error:', error);
-        alert('Server connection failed');
-      }
-  };
-
-  useEffect(() => {
-    const token = localStorage.getItem('authToken');
-
-    if (token) {
-      router.push('/dashboard');
-    }
-  }, [router]);
+		router.replace('/dashboard');
+	  } catch {
+		alert('Server connection failed');
+	  }
+	};
 
   useEffect(() => {
     gsap.fromTo(cardRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
