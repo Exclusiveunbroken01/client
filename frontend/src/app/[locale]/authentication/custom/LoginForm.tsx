@@ -35,20 +35,17 @@ const LoginForm = () => {
   const toggleOTPStatus = () => setOtpStatus(!otpStatus);
 
   const onSubmit = async (data: LoginFormValues) => {
-    try {
-      // Use the service instead of manual fetch
-      const result = await loginService(data);
-      
-      console.log('Login successful:', result);
-
-      // Hard redirect to dashboard to refresh auth state in middleware
-      window.location.href = '/dashboard';
-      
-    } catch (error: any) {
-      console.error('Login error:', error);
-      alert(error.message || 'Invalid Credentials');
-    }
-  };
+	  try {
+		const result = await loginService(data);
+		window.location.href = '/dashboard';
+	  } catch (error: unknown) { // Change 'any' to 'unknown'
+		console.error('Login error:', error);
+		
+		// Type guard for the error message
+		const errorMessage = error instanceof Error ? error.message : 'Invalid Credentials';
+		alert(errorMessage);
+	  }
+	};
 
   useEffect(() => {
     gsap.fromTo(cardRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
