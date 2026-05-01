@@ -32,19 +32,24 @@ export const login = async (req: Request, res: Response) => {
     const result = await authService.login(data);
 
     // 1. Set JWT as HTTP-only cookie (Secure, hidden from JS)
-    res.cookie("token", result.token, {
-      httpOnly: true,
-      sameSite: "strict",
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-    });
+    const isProd = process.env.NODE_ENV === "production";
+
+	const cookieOptions = {
+	  httpOnly: true,
+	  secure: isProd, // 👈 only true in production
+	  sameSite: isProd ? ("none" as const) : ("lax" as const),
+	  maxAge: 1000 * 60 * 60 * 24 * 7,
+	  path: "/",
+	};
 
     // 2. NEW: Set a UI-flag cookie (Visible to JS)
     // We set httpOnly: false so document.cookie can see it
-    res.cookie("isLoggedIn", "true", {
-      httpOnly: false, 
-      sameSite: "strict",
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-    });
+    res.cookie("token", result.token, cookieOptions);
+
+	res.cookie("isLoggedIn", "true", {
+	  ...cookieOptions,
+	  httpOnly: false,
+	});
 
     res.status(200).json({
       success: true,
