@@ -31,30 +31,32 @@ export const login = async (req: Request, res: Response) => {
     const data: LoginInput = req.body;
     const result = await authService.login(data);
 
-    // 1. Set JWT as HTTP-only cookie (Secure, hidden from JS)
-    res.cookie("token", result.token, {
+    const cookieOptions = {
       httpOnly: true,
-      sameSite: "strict",
+      // Must be true for SameSite: none
+      // In production, ensure your site is on HTTPS
+      secure: true, 
+      sameSite: "none" as const, 
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-    });
+      path: "/",
+    };
 
-    // 2. NEW: Set a UI-flag cookie (Visible to JS)
-    // We set httpOnly: false so document.cookie can see it
+    // 1. Set JWT as HTTP-only cookie
+    res.cookie("token", result.token, cookieOptions);
+
+    // 2. UI-flag cookie (Accessible to JS)
     res.cookie("isLoggedIn", "true", {
-      httpOnly: false, 
-      sameSite: "strict",
-      maxAge: 1000 * 60 * 60 * 24 * 7,
+      ...cookieOptions,
+      httpOnly: false, // Allow client-side JS to see this flag
     });
 
     res.status(200).json({
       success: true,
       message: "Login successful",
-      data: {
-        user: result.user,
-      },
+      data: { user: result.user },
     });
   } catch (error: any) {
-    // ... your existing catch block
+    res.status(401).json({ success: false, message: error.message });
   }
 };
 
@@ -65,13 +67,15 @@ export const login = async (req: Request, res: Response) => {
 */
 
 export const logout = (req: Request, res: Response) => {
-  // Clear the cookie with the exact same options as login
-  res.clearCookie('token', {
+  const clearOptions = {
     httpOnly: true,
-    //secure: process.env.NODE_ENV === 'production', 
-    sameSite: 'strict',
+    secure: true,
+    sameSite: "none" as const,
     path: '/', 
-  });
+  };
+
+  res.clearCookie('token', clearOptions);
+  res.clearCookie('isLoggedIn', { ...clearOptions, httpOnly: false });
 
   res.status(200).json({ success: true, message: 'Logged out successfully' });
 };
