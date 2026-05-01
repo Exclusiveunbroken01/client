@@ -8,7 +8,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import SVGIcon from '@/components/defaults/SVGIcons';
 import { useRouter } from 'next/navigation';
 import { loginService } from '@/app/service/domain/auth/auth.service'; // Import service
 
