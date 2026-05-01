@@ -46,7 +46,6 @@ export async function apiClient<TResponse, TBody = unknown>(
     body: body ? JSON.stringify(body) : undefined,
     headers: requestHeaders,
     cache: 'no-store',
-    credentials: 'include', // <--- ADD THIS LINE to allow cookies/sessions
   });
 
   if (!res.ok) {
