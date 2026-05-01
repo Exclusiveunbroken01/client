@@ -1,3 +1,4 @@
+// src/app/service/domain/auth/auth.service.ts (or wherever your services live)
 import { apiClient } from '@/lib/api/apiClient';
 
 export interface LoginCredentials {
@@ -5,21 +6,10 @@ export interface LoginCredentials {
   password: string;
 }
 
-export interface AuthResponse {
-  user: {
-    id: string;
-    email: string;
-    name?: string;
-  };
-  token?: string;
-}
-
-export async function loginUser(data: LoginCredentials) {
-  return apiClient<AuthResponse, LoginCredentials>(
-    '/auth/login',
-    {
-      method: 'POST',
-      body: data,
-    }
-  );
+export async function loginService(credentials: LoginCredentials) {
+  // Use apiClient so it gets the right Base URL and error handling
+  return apiClient('/auth/login', {
+    method: 'POST',
+    body: credentials,
+  });
 }

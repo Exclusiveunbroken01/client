@@ -27,7 +27,7 @@ export async function apiClient<TResponse, TBody = unknown>(
     ).toString()
   : '';
 
-  const isNextProxiedEndpoint = endpoint.startsWith('/flights') || endpoint.startsWith('/payments') || endpoint.startsWith('/auth');
+  const isNextProxiedEndpoint = endpoint.startsWith('/flights') || endpoint.startsWith('/payments');
   const baseUrl = isNextProxiedEndpoint ? '/api' : process.env.NEXT_PUBLIC_API_URL;
   const url = `${baseUrl}${endpoint}${queryString}`;
 
@@ -42,12 +42,12 @@ export async function apiClient<TResponse, TBody = unknown>(
   }
 
   const res = await fetch(url, {
-	  method,
-	  body: body ? JSON.stringify(body) : undefined,
-	  headers: requestHeaders,
-	  cache: 'no-store',
-	  credentials: 'include',
-	});
+    method,
+    body: body ? JSON.stringify(body) : undefined,
+    headers: requestHeaders,
+    cache: 'no-store',
+    credentials: 'include', // <--- ADD THIS LINE to allow cookies/sessions
+  });
 
   if (!res.ok) {
     const rawData = await res.text();
