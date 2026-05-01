@@ -8,8 +8,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import SVGIcon from '@/components/defaults/SVGIcons';
-import { useRouter } from 'next/navigation';
 import { loginService } from '@/app/service/domain/auth/auth.service';
 import { ApiError } from '@/lib/utils/errors/api-error.util';
 
@@ -22,7 +20,6 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
   const cardRef = useRef(null);
-  const router = useRouter();
 
   const {
     register,
