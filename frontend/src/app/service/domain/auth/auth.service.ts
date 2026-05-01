@@ -1,15 +1,25 @@
 import { apiClient } from '@/lib/api/apiClient';
 
-export interface RegisterPayload {
-  firstName: string;
-  lastName: string;
+export interface LoginCredentials {
   email: string;
   password: string;
 }
 
-export async function registerService(payload: RegisterPayload) {
-  return apiClient('/auth/register', {
-    method: 'POST',
-    body: payload,
-  });
+export interface AuthResponse {
+  user: {
+    id: string;
+    email: string;
+    name?: string;
+  };
+  token?: string;
+}
+
+export async function loginUser(data: LoginCredentials) {
+  return apiClient<AuthResponse, LoginCredentials>(
+    '/auth/login',
+    {
+      method: 'POST',
+      body: data,
+    }
+  );
 }

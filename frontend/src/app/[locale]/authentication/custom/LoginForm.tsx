@@ -12,6 +12,8 @@ import SVGIcon from '@/components/defaults/SVGIcons';
 import { useRouter } from 'next/navigation';
 import { loginUser } from '@/lib/api/auth.service';
 
+
+
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address').nonempty('Email is required'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
@@ -39,25 +41,15 @@ const LoginForm = () => {
 
   const onSubmit = async (data: LoginFormValues) => {
 	  try {
-		const result = await loginUser(data);
+		await loginUser(data);
 
-		console.log(result);
-
-		window.location.href = '/dashboard';
+		router.push('/dashboard');
+		router.refresh();
 
 	  } catch (error) {
-		console.error(error);
-		alert(error instanceof Error ? error.message : 'Login failed');
+		alert('Invalid credentials');
 	  }
 	};
-
-  useEffect(() => {
-    const token = localStorage.getItem('authToken');
-
-    if (token) {
-      router.push('/dashboard');
-    }
-  }, [router]);
 
   useEffect(() => {
     gsap.fromTo(cardRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
