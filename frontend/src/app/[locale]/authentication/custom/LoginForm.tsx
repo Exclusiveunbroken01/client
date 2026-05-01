@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import SVGIcon from '@/components/defaults/SVGIcons';
 import { useRouter } from 'next/navigation';
+import { loginUser } from '@/lib/api/auth.service';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address').nonempty('Email is required'),
@@ -37,30 +38,18 @@ const LoginForm = () => {
   const router = useRouter();
 
   const onSubmit = async (data: LoginFormValues) => {
-      try {
-        const res = await fetch('http://localhost:5000/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-          credentials: 'include', // Important for cookies
-        });
+	  try {
+		const result = await loginUser(data);
 
-        const result = await res.json();
+		console.log(result);
 
-        if (!res.ok) {
-          alert(result.message || 'Invalid Credentials');
-          return;
-        }
+		window.location.href = '/dashboard';
 
-        // Refresh the page or use router.push to the LOCALE-prefixed dashboard
-        // 'window.location.href' is often safer for auth to ensure middleware picks up the new cookie
-        window.location.href = '/dashboard'; 
-        
-      } catch (error) {
-        console.error('Login error:', error);
-        alert('Server connection failed');
-      }
-  };
+	  } catch (error) {
+		console.error(error);
+		alert(error instanceof Error ? error.message : 'Login failed');
+	  }
+	};
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
